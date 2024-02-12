@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Recipe.Migrations
+namespace RecipeBook.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class ChangeName : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

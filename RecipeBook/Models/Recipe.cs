@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Recipe.Models;
+namespace RecipeBook.Models;
 
 public class Recipe
 {

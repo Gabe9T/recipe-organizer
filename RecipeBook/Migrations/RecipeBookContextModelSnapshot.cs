@@ -3,14 +3,14 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Recipe.Models;
+using RecipeBook.Models;
 
 #nullable disable
 
-namespace Recipe.Migrations
+namespace RecipeBook.Migrations
 {
-    [DbContext(typeof(RecipeContext))]
-    partial class RecipeContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RecipeBookContext))]
+    partial class RecipeBookContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -147,7 +147,7 @@ namespace Recipe.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Recipe.Models.ApplicationUser", b =>
+            modelBuilder.Entity("RecipeBook.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -211,7 +211,7 @@ namespace Recipe.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Recipe.Models.Ingredient", b =>
+            modelBuilder.Entity("RecipeBook.Models.Ingredient", b =>
                 {
                     b.Property<int>("IngredientId")
                         .ValueGeneratedOnAdd()
@@ -228,7 +228,7 @@ namespace Recipe.Migrations
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("Recipe.Models.IngredientQuantity", b =>
+            modelBuilder.Entity("RecipeBook.Models.IngredientQuantity", b =>
                 {
                     b.Property<int>("IngredientQuantityId")
                         .ValueGeneratedOnAdd()
@@ -249,7 +249,7 @@ namespace Recipe.Migrations
                     b.ToTable("IngredientQuantities");
                 });
 
-            modelBuilder.Entity("Recipe.Models.IngredientRecipe", b =>
+            modelBuilder.Entity("RecipeBook.Models.IngredientRecipe", b =>
                 {
                     b.Property<int>("IngredientRecipeId")
                         .ValueGeneratedOnAdd()
@@ -270,7 +270,7 @@ namespace Recipe.Migrations
                     b.ToTable("IngredientRecipes");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Quantity", b =>
+            modelBuilder.Entity("RecipeBook.Models.Quantity", b =>
                 {
                     b.Property<int>("QuantityId")
                         .ValueGeneratedOnAdd()
@@ -284,7 +284,7 @@ namespace Recipe.Migrations
                     b.ToTable("Quantities");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Recipe", b =>
+            modelBuilder.Entity("RecipeBook.Models.Recipe", b =>
                 {
                     b.Property<int>("RecipeId")
                         .ValueGeneratedOnAdd()
@@ -315,7 +315,7 @@ namespace Recipe.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("Recipe.Models.RecipeTag", b =>
+            modelBuilder.Entity("RecipeBook.Models.RecipeTag", b =>
                 {
                     b.Property<int>("RecipeTagId")
                         .ValueGeneratedOnAdd()
@@ -336,7 +336,7 @@ namespace Recipe.Migrations
                     b.ToTable("RecipeTags");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Tag", b =>
+            modelBuilder.Entity("RecipeBook.Models.Tag", b =>
                 {
                     b.Property<int>("TagId")
                         .ValueGeneratedOnAdd()
@@ -361,7 +361,7 @@ namespace Recipe.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Recipe.Models.ApplicationUser", null)
+                    b.HasOne("RecipeBook.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -370,7 +370,7 @@ namespace Recipe.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Recipe.Models.ApplicationUser", null)
+                    b.HasOne("RecipeBook.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -385,7 +385,7 @@ namespace Recipe.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Recipe.Models.ApplicationUser", null)
+                    b.HasOne("RecipeBook.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -394,22 +394,22 @@ namespace Recipe.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Recipe.Models.ApplicationUser", null)
+                    b.HasOne("RecipeBook.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Recipe.Models.IngredientQuantity", b =>
+            modelBuilder.Entity("RecipeBook.Models.IngredientQuantity", b =>
                 {
-                    b.HasOne("Recipe.Models.Ingredient", "Ingredient")
+                    b.HasOne("RecipeBook.Models.Ingredient", "Ingredient")
                         .WithMany("IQJoin")
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Recipe.Models.Quantity", "Quantity")
+                    b.HasOne("RecipeBook.Models.Quantity", "Quantity")
                         .WithMany("JoinEntities")
                         .HasForeignKey("QuantityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -420,15 +420,15 @@ namespace Recipe.Migrations
                     b.Navigation("Quantity");
                 });
 
-            modelBuilder.Entity("Recipe.Models.IngredientRecipe", b =>
+            modelBuilder.Entity("RecipeBook.Models.IngredientRecipe", b =>
                 {
-                    b.HasOne("Recipe.Models.Ingredient", "Ingredient")
+                    b.HasOne("RecipeBook.Models.Ingredient", "Ingredient")
                         .WithMany("IRJoin")
                         .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Recipe.Models.Recipe", "Recipe")
+                    b.HasOne("RecipeBook.Models.Recipe", "Recipe")
                         .WithMany("IRJoin")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -439,24 +439,24 @@ namespace Recipe.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Recipe", b =>
+            modelBuilder.Entity("RecipeBook.Models.Recipe", b =>
                 {
-                    b.HasOne("Recipe.Models.ApplicationUser", "User")
+                    b.HasOne("RecipeBook.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Recipe.Models.RecipeTag", b =>
+            modelBuilder.Entity("RecipeBook.Models.RecipeTag", b =>
                 {
-                    b.HasOne("Recipe.Models.Recipe", "Recipe")
+                    b.HasOne("RecipeBook.Models.Recipe", "Recipe")
                         .WithMany("RTJoin")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Recipe.Models.Tag", "Tag")
+                    b.HasOne("RecipeBook.Models.Tag", "Tag")
                         .WithMany("JoinEntities")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,26 +467,26 @@ namespace Recipe.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Ingredient", b =>
+            modelBuilder.Entity("RecipeBook.Models.Ingredient", b =>
                 {
                     b.Navigation("IQJoin");
 
                     b.Navigation("IRJoin");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Quantity", b =>
+            modelBuilder.Entity("RecipeBook.Models.Quantity", b =>
                 {
                     b.Navigation("JoinEntities");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Recipe", b =>
+            modelBuilder.Entity("RecipeBook.Models.Recipe", b =>
                 {
                     b.Navigation("IRJoin");
 
                     b.Navigation("RTJoin");
                 });
 
-            modelBuilder.Entity("Recipe.Models.Tag", b =>
+            modelBuilder.Entity("RecipeBook.Models.Tag", b =>
                 {
                     b.Navigation("JoinEntities");
                 });

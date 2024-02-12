@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Recipe.Models
+namespace RecipeBook.Models
 {
-    public class RecipeContext : IdentityDbContext<ApplicationUser>
+    public class RecipeBookContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Quantity> Quantities { get; set; }
@@ -13,6 +13,6 @@ namespace Recipe.Models
         public DbSet<IngredientRecipe> IngredientRecipes { get; set; }
         public DbSet<RecipeTag> RecipeTags { get; set; }
 
-        public RecipeContext(DbContextOptions options) : base(options) { }
+        public RecipeBookContext(DbContextOptions options) : base(options) { }
     }
 }
