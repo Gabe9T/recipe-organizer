@@ -12,7 +12,7 @@ public class Recipe
     public string ImageUrl { get; set; }
     public int Rating { get; set; }
     public ApplicationUser User { get; set; }
-    public List<IngredientRecipe> IRJoin { get; }
+    public List<IngredientRecipe> IRJoin { get; } = new List<IngredientRecipe>();
     public List<RecipeTag> RTJoin { get; }
 
 }

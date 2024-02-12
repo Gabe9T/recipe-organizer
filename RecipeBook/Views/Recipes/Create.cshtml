@@ -1,7 +1,63 @@
+@* @model RecipeBook.Models.Recipe
+
+<h2>Add a new recipe</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m => m.Name)
+    @Html.TextBoxFor(m => m.Name)
+    @Html.LabelFor(m => m.Description)
+    @Html.TextBoxFor(m => m.Description)
+    @Html.LabelFor(m => m.Instructions)
+    @Html.TextBoxFor(m => m.Instructions)
+    @Html.LabelFor(m => m.ImageUrl)
+    @Html.TextBoxFor(m => m.ImageUrl)
+    @Html.LabelFor(m => m.Rating)
+    @Html.TextBoxFor(m => m.Rating) *@
+    
+    @*<label for="ing-name">Ingredient Name: </label>
+    <input type=text id="ing-name" name="ing-name">
+
+    <label for="ing-url">Ingredient Image URL: </label>
+    <input type=text id="ing-url" name="ing-url">
+
+    <input type=submit value="Add recipe" />
+}*@
+
+
+@* @using (Html.BeginForm())
+{
+@Html.Label("Name", "Name")
+@Html.TextBox("Name")
+@Html.Label("ImageUrl", "Image URL")
+@Html.TextBox("ImageUrl")
+}
+
+@using (Html.BeginForm())
+{
+@Html.Label("QuantityId", "QuantityId")
+@Html.TextBox("quantity")
+@Html.Label("Amount", "Amount")
+@Html.TextBox("Amount")
+}
+
+@using (Html.BeginForm())
+{
+@Html.Label("IngredientRecipeId", "IngredientRecipeId")
+@Html.TextBox("IngredientRecipe")
+@Html.Label("IngredientId", "IngredientId")
+@Html.TextBox("Ingredient")
+@Html.Label("RecipeId", "RecipeId")
+@Html.TextBox("Recipe")
+} *@
+
+
+
+
 @* When a user submits this form these things need to happen
 
-* Create new Recipe
-* Create new Ingredient (if not yet in database)
+* Create new Recipe X
+* Create new Ingredient (if not yet in database) X
 * Create new Quantity (if not yet in database)
 * Create new IngredientRecipe
 * Create new IngredientQuantity (if not yet in database)
@@ -11,3 +67,91 @@
 
 
 * UI looks like one form but it is probably a different form for each of the above bullet points*@
+
+@* @using (HtmlBeginForm("SubmitAll", "Recipe", FormMethod.Post, new { id = "mainForm" }))
+{
+<h3>Recipe Details</h3>
+@Html.LabelFor(model => model.RecipeName)
+@Html.TextBoxFor(model => model.RecipeName)
+@Html.LabelFor(model => model.Description)
+@Html.TextBoxFor(model => model.Description)
+@Html.LabelFor(model => model.Instructions)
+@Html.TextBoxFor(model => model.Instructions)
+@Html.LabelFor(model => model.ImageUrl)
+@Html.TextBoxFor(model => model.ImageUrl)
+@Html.LabelFor(model => model.Rating)
+@Html.TextBoxFor(model => model.Rating)
+
+<h3>Ingredient Details</h3>
+@Html.LabelFor(model => model.IngredientName)
+@Html.TextBoxFor(model => model.IngredientName)
+@Html.LabelFor(model => model.IngredientImageUrl)
+@Html.TextBoxFor(model => model.IngredientImageUrl)
+
+<h3>Quantity Details</h3>
+@Html.LabelFor(model => model.Quantity)
+@Html.TextBoxFor(model => model.Quantity)
+@Html.LabelFor(model => model.Amount)
+@Html.TextBoxFor(model => model.Amount)
+
+<input type="submit" value="Submit">
+} *@
+
+@model RecipeBook.Models.RecipeViewModel
+
+@using (Html.BeginForm("Create", "Recipes", FormMethod.Post))
+{
+    <div>
+        <label for="RecipeName">Recipe Name:</label>
+        @Html.TextBoxFor(m => m.RecipeName, new { required = "required" })
+        @Html.ValidationMessageFor(m => m.RecipeName)
+    </div>
+
+    <div>
+        <label for="Instructions">Instructions:</label>
+        @Html.TextAreaFor(m => m.Instructions, new { required = "required" })
+        @Html.ValidationMessageFor(m => m.Instructions)
+    </div>
+
+    <h3>Ingredients:</h3>
+    <div id="ingredientContainer">
+        @for (int i = 0; i < Model.Ingredients.Count; i++)
+        {
+            <div class="ingredient">
+                <label for="Ingredients">Ingredient:</label>
+                @Html.TextBoxFor(m => m.Ingredients[i], new { required = "required" })
+                <button type="button" class="removeIngredient">Remove</button>
+            </div>
+        }
+    </div>
+    <button type="button" id="addIngredient">Add Ingredient</button>
+
+    <input type="submit" value="Submit" />
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addIngredientButton = document.getElementById("addIngredient");
+        const ingredientContainer = document.getElementById("ingredientContainer");
+
+        addIngredientButton.addEventListener("click", function () {
+            const newIngredientDiv = document.createElement("div");
+            newIngredientDiv.className = "ingredient";
+
+            newIngredientDiv.innerHTML = `
+                <label for="Ingredients">Ingredient:</label>
+                <input type="text" name="Ingredients" required />
+                <button type="button" class="removeIngredient">Remove</button>
+            `;
+
+            ingredientContainer.appendChild(newIngredientDiv);
+
+            // Add event listener for removing the ingredient
+            const removeIngredientButton = newIngredientDiv.querySelector(".removeIngredient");
+            removeIngredientButton.addEventListener("click", function () {
+                ingredientContainer.removeChild(newIngredientDiv);
+            });
+        });
+    });
+</script>
+
