@@ -76,17 +76,23 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const addIngredientButton = document.getElementById("addIngredient");
-        const ingredientContainer = document.getElementById("ingredientContainer");
+        const container = document.getElementById("ingredientContainer");
 
+        container.addEventListener("click", function (event) {
+            if (event.target.classList.contains("removeIngredient")) {
+                const ingredientDiv = event.target.closest(".ingredient");
+                container.removeChild(ingredientDiv);
+            }
+        });
+
+        const addIngredientButton = document.getElementById("addIngredient");
         addIngredientButton.addEventListener("click", function () {
             const newIngredientDiv = document.createElement("div");
             newIngredientDiv.className = "ingredient";
 
-            // Get the current count of ingredients
-            const index = document.querySelectorAll('.ingredient').length;
+            const index = container.children.length;
 
-            newIngredientDiv.innerHTML = ` 
+            newIngredientDiv.innerHTML = `
                 <label for="Ingredients">Ingredient:</label>
                 <input type="text" name="IRJoin[${index}].Ingredient.Name" required />
 
@@ -96,39 +102,36 @@
                 <button type="button" class="removeIngredient">Remove</button>
             `;
 
-            ingredientContainer.appendChild(newIngredientDiv);
+            container.appendChild(newIngredientDiv);
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("tagContainer");
 
-            // Add event listener for removing the ingredient
-            const removeIngredientButton = newIngredientDiv.querySelector(".removeIngredient");
-            removeIngredientButton.addEventListener("click", function () {
-                ingredientContainer.removeChild(newIngredientDiv);
-            });
+        container.addEventListener("click", function (event) {
+            if (event.target.classList.contains("removeTag")) {
+                const tagDiv = event.target.closest(".tag");
+                container.removeChild(tagDiv);
+            }
         });
 
         const addTagButton = document.getElementById("addTag");
-        const tagContainer = document.getElementById("tagContainer");
-
         addTagButton.addEventListener("click", function () {
             const newTagDiv = document.createElement("div");
             newTagDiv.className = "tag";
 
-            // Get the current count of tags
-            const tagIndex = document.querySelectorAll('.tag').length;
+            const index = container.children.length;
 
-            newTagDiv.innerHTML = ` 
+            newTagDiv.innerHTML = `
                 <label for="Tags">Tag:</label>
-                <input type="text" name="RTJoin[${tagIndex}].Tag.Name" required />
+                <input type="text" name="RTJoin[${index}].Tag.Name" required />
 
                 <button type="button" class="removeTag">Remove</button>
             `;
 
-            tagContainer.appendChild(newTagDiv);
-
-            // Add event listener for removing the tag
-            const removeTagButton = newTagDiv.querySelector(".removeTag");
-            removeTagButton.addEventListener("click", function () {
-                tagContainer.removeChild(newTagDiv);
-            });
+            container.appendChild(newTagDiv);
         });
     });
 </script>

@@ -132,39 +132,90 @@ public class RecipesController : Controller
     {
         if (ModelState.IsValid)
         {
-            // Update the recipe properties
-            _context.Entry(model).State = EntityState.Modified;
+            // Retrieve the existing recipe from the database including related entities
+            Recipe existingRecipe = _context.Recipes
+                .Include(r => r.IRJoin)
+                .ThenInclude(join => join.Ingredient)
+                .Include(r => r.RTJoin)
+                .ThenInclude(join => join.Tag)
+                .FirstOrDefault(r => r.RecipeId == id);
 
-            // Update or add ingredients
-            foreach (var join in model.IRJoin)
+            if (existingRecipe == null)
             {
-                if (join.Ingredient != null)
+                return NotFound();
+            }
+
+            // Clear existing IngredientRecipe relationships for the recipe
+            _context.IngredientRecipes.RemoveRange(existingRecipe.IRJoin);
+
+            // Clear existing RecipeTag relationships for the recipe
+            _context.RecipeTags.RemoveRange(existingRecipe.RTJoin);
+
+            // Update properties of the existing recipe
+            existingRecipe.Name = model.Name;
+            existingRecipe.Description = model.Description;
+            existingRecipe.Instructions = model.Instructions;
+            existingRecipe.ImageUrl = model.ImageUrl;
+            existingRecipe.Rating = model.Rating;
+
+            // Add new IngredientRecipe entities
+            foreach (var modelJoin in model.IRJoin)
+            {
+                // If the join has a new Ingredient, add it only if it doesn't already exist
+                string trimmedIngredientName = modelJoin.Ingredient.Name.Trim();
+                Ingredient existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == trimmedIngredientName);
+
+                if (existingIngredient != null)
                 {
-                    _context.Entry(join.Ingredient).State = EntityState.Modified;
+                    // If the ingredient already exists, associate it with the join
+                    modelJoin.Ingredient = existingIngredient;
                 }
                 else
                 {
-                    _context.Ingredients.Add(join.Ingredient);
+                    // If the ingredient doesn't exist, add a new one
+                    Ingredient newIngredient = new Ingredient { Name = trimmedIngredientName };
+                    modelJoin.Ingredient = newIngredient;
+                    _context.Ingredients.Add(newIngredient);
                 }
 
-                _context.Entry(join).State = EntityState.Modified;
+                // Add new IngredientRecipe
+                existingRecipe.IRJoin.Add(new IngredientRecipe
+                {
+                    Ingredient = modelJoin.Ingredient,
+                    Recipe = existingRecipe,
+                    Quantity = modelJoin.Quantity
+                });
             }
 
-            // Update or add tags
-            foreach (var join in model.RTJoin)
+            // Add new RecipeTag entities
+            foreach (var modelTag in model.RTJoin)
             {
-                if (join.Tag != null)
+                // If the join has a new Tag, add it only if it doesn't already exist
+                string trimmedTagName = modelTag.Tag.Name.Trim();
+                Tag existingTag = _context.Tags.FirstOrDefault(t => t.Name == trimmedTagName);
+
+                if (existingTag != null)
                 {
-                    _context.Entry(join.Tag).State = EntityState.Modified;
+                    // If the tag already exists, associate it with the join
+                    modelTag.Tag = existingTag;
                 }
                 else
                 {
-                    _context.Tags.Add(join.Tag);
+                    // If the tag doesn't exist, add a new one
+                    Tag newTag = new Tag { Name = trimmedTagName };
+                    modelTag.Tag = newTag;
+                    _context.Tags.Add(newTag);
                 }
 
-                _context.Entry(join).State = EntityState.Modified;
+                // Add new RecipeTag
+                existingRecipe.RTJoin.Add(new RecipeTag
+                {
+                    Tag = modelTag.Tag,
+                    Recipe = existingRecipe
+                });
             }
 
+            // Save changes to the database
             _context.SaveChanges();
 
             return RedirectToAction("Index");
