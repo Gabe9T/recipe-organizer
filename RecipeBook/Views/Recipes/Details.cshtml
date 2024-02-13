@@ -3,8 +3,7 @@
 
 <div class="content">
     <div class="details">
-        <h2>Details</h2>
-        <h3>Name: @Model.Name</h3>
+        <h2>@Model.Name Details</h2>
         <p>Description: @Model.Description</p>
         <p>Instructions: @Model.Instructions</p>
         <img src="@Model.ImageUrl" alt="Recipe Image" />
@@ -28,8 +27,9 @@
 
         <br />
 
-        @Html.ActionLink("Edit recipe", "Edit") |
-        @Html.ActionLink("Delete recipe", "Delete") |
-        @Html.ActionLink("Back To List", "Index", "Recipe")
+@Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" }) |
+@Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger" }) |
+@Html.ActionLink("Back To List", "Index", "Recipes", null, new { @class = "btn btn-primary" }) 
+        
     </div>
 </div>
