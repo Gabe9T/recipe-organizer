@@ -14,31 +14,124 @@
     @Html.HiddenFor(model => model.RecipeId)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Name)
-        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
+    @Html.LabelFor(model => model.Name)
+    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+</div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Description)
-        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
+    @Html.LabelFor(model => model.Description)
+    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+</div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Instructions)
-        @Html.TextAreaFor(model => model.Instructions, new { @class = "form-control", rows = 4 })
-    </div>
+    @Html.LabelFor(model => model.Instructions)
+    @Html.TextAreaFor(model => model.Instructions, new { @class = "form-control", rows = 4 })
+</div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ImageUrl)
-        @Html.EditorFor(model => model.ImageUrl, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
+    @Html.LabelFor(model => model.ImageUrl)
+    @Html.EditorFor(model => model.ImageUrl, new { htmlAttributes = new { @class = "form-control" } })
+</div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Rating)
-        @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.LabelFor(model => model.Rating)
+    @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
+</div>
+
+    <h3>Edit Ingredients:</h3>
+    <div id="ingredientContainer">
+    @for (int i = 0; i < Model.IRJoin.Count; i++)
+        {
+            <div class="ingredient">
+                <label for="Ingredients">Ingredient:</label>
+                @Html.TextBoxFor(m => m.IRJoin[i].Ingredient.Name, new { required = "required" })
+
+                <label for="Quantities">Quantity:</label>
+                @Html.TextBoxFor(m => m.IRJoin[i].Quantity, new { required = "required" })
+
+                <button type="button" class="removeIngredient">Remove</button>
+            </div>
+        }
     </div>
+    <button type="button" id="addIngredient">Add Ingredient</button>
+
+    <h3>Edit Tags:</h3>
+    <div id="tagContainer">
+    @for (int i = 0; i < Model.RTJoin.Count; i++)
+        {
+            <div class="tag">
+                <label for="Tags">Tag:</label>
+                @Html.TextBoxFor(m => m.RTJoin[i].Tag.Name, new { required = "required" })
+
+                <button type="button" class="removeTag">Remove</button>
+            </div>
+        }
+    </div>
+    <button type="button" id="addTag">Add Tag</button>
 
     <input type="submit" value="Save" class="btn btn-primary" />
 }
 
 @Html.ActionLink("Cancel", "Details", new { id = Model.RecipeId }, new { @class = "btn btn-default" })
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("ingredientContainer");
+
+        container.addEventListener("click", function (event) {
+            if (event.target.classList.contains("removeIngredient")) {
+                const ingredientDiv = event.target.closest(".ingredient");
+                container.removeChild(ingredientDiv);
+            }
+        });
+
+        const addIngredientButton = document.getElementById("addIngredient");
+        addIngredientButton.addEventListener("click", function () {
+            const newIngredientDiv = document.createElement("div");
+            newIngredientDiv.className = "ingredient";
+
+            const index = container.children.length;
+
+            newIngredientDiv.innerHTML = `
+                <label for="Ingredients">Ingredient:</label>
+                <input type="text" name="IRJoin[${index}].Ingredient.Name" required />
+
+                <label for="Quantities">Quantity:</label>
+                <input type="text" name="IRJoin[${index}].Quantity" required />
+
+                <button type="button" class="removeIngredient">Remove</button>
+            `;
+
+            container.appendChild(newIngredientDiv);
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("tagContainer");
+
+        container.addEventListener("click", function (event) {
+            if (event.target.classList.contains("removeTag")) {
+                const tagDiv = event.target.closest(".tag");
+                container.removeChild(tagDiv);
+            }
+        });
+
+        const addTagButton = document.getElementById("addTag");
+        addTagButton.addEventListener("click", function () {
+            const newTagDiv = document.createElement("div");
+            newTagDiv.className = "tag";
+
+            const index = container.children.length;
+
+            newTagDiv.innerHTML = `
+                <label for="Tags">Tag:</label>
+                <input type="text" name="RTJoin[${index}].Tag.Name" required />
+
+                <button type="button" class="removeTag">Remove</button>
+            `;
+
+            container.appendChild(newTagDiv);
+        });
+    });
+</script>
