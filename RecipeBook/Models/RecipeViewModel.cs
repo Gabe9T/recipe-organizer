@@ -16,6 +16,7 @@ namespace RecipeBook.Models
         public string ImageUrl { get; set; }
 
         public List<IngredientViewModel> Ingredients { get; set; } = new List<IngredientViewModel>();
+        public List<TagViewModel> Tags { get; set; } = new List<TagViewModel>();
     }
 
     public class IngredientViewModel
@@ -25,5 +26,10 @@ namespace RecipeBook.Models
 
         [Required(ErrorMessage = "Quantity is required")]
         public string Quantity { get; set; }
+    }
+    public class TagViewModel
+    {
+        [Required(ErrorMessage = "Tag Name is required")]
+        public string Name { get; set; }
     }
 }
