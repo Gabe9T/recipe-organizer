@@ -40,19 +40,26 @@ public class RecipesController : Controller
 
             foreach (var ingredientViewModel in model.Ingredients)
             {
-                Ingredient ingredient = new Ingredient { Name = ingredientViewModel.Name };
+                string ingredientName = ingredientViewModel.Name.Trim();
+                Ingredient existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == ingredientName);
+                Ingredient ingredient;
+                if (existingIngredient != null)
+                {
+                    ingredient = existingIngredient;
+                }
+                else
+                {
+                    ingredient = new Ingredient { Name = ingredientName };
+                    _context.Ingredients.Add(ingredient);
+                }
                 IngredientRecipe ingredientRecipe = new IngredientRecipe { Ingredient = ingredient, Recipe = recipe, Quantity = ingredientViewModel.Quantity };
                 recipe.IRJoin.Add(ingredientRecipe);
-                _context.Ingredients.Add(ingredient);
                 _context.IngredientRecipes.Add(ingredientRecipe);
             }
-
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
-
             return RedirectToAction("Index");
         }
-
         return View(model);
     }
 
