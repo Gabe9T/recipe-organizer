@@ -8,10 +8,8 @@ namespace RecipeBook.Controllers;
 public class SearchController : Controller
 {
     private readonly RecipeBookContext _db;
-    private readonly UserManager<ApplicationUser> _userManager;
-    public SearchController(UserManager<ApplicationUser> userManager, RecipeBookContext db)
+    public SearchController(RecipeBookContext db)
     {
-        _userManager = userManager;
         _db = db;
     }
 
@@ -20,12 +18,12 @@ public class SearchController : Controller
         switch (searchType)
         {
             case "rec":
-                List<Recipes> recResults = await _db.Recipes
+                List<Recipe> recResults = await _db.Recipes
                     .Where(r => r.Name.Contains(searchTerm))
                     .ToListAsync();
                 return View(recResults);
             case "ing":
-                List<Ingredients> ingResults = await _db.Recipes
+                List<Ingredient> ingResults = await _db.Ingredients
                     .Where(i => i.Name.Contains(searchTerm))
                     .ToListAsync();
                 return View(ingResults);
@@ -33,7 +31,7 @@ public class SearchController : Controller
                 List<Recipe> ingRecResults = await _db.Recipes
                     .Where(recipe => recipe.IRJoin.Any(join => join.Ingredient.Name == searchTerm))
                     .ToListAsync();
-                return View(ingRecResults)
+                return View(ingRecResults);
                 // Ingredient ing = _db.Ingredients.FirstOrDefault(i => i.Name == searchTerm);
                 // List<Recipe> ingRecResults = _db.Recipes
                 //     .Include(ir => ir.IRJoin)
