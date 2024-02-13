@@ -1,0 +1,24 @@
+@using RecipeBook.ViewModels
+
+@model LoginViewModel
+
+<h2>Log ing to your account</h2>
+<hr />
+
+@if (!ViewData.ModelState.IsValid)
+{
+    @Html.ValidationSummary("Please fix the following error(s) and resubmit the form:")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m => m.Email)
+    @Html.TextBoxFor(m => m.Email)
+
+    @Html.LabelFor(m => m.Password)
+    @Html.EditorFor(m => m.Password)
+
+    <input type=submit value="Log in" />
+}
+
+<p>@Html.ActionLink("Register for an account", "Register")</p>
