@@ -66,5 +66,63 @@ public class RecipesController : Controller
         return View(rec);
     }
 
-    // Other actions and methods as needed
+[HttpGet]
+public IActionResult Edit(int id)
+{
+    Recipe recipe = _context.Recipes
+        .Include(r => r.IRJoin)
+        .ThenInclude(join => join.Ingredient)
+        .FirstOrDefault(r => r.RecipeId == id);
+
+    if (recipe == null)
+    {
+        return NotFound();
+    }
+
+    return View(recipe);
+}
+
+[HttpPost]
+public IActionResult Edit(int id, Recipe model)
+{
+
+    if (ModelState.IsValid)
+    {
+        // Update the recipe in the database
+        _context.Entry(model).State = EntityState.Modified;
+        _context.SaveChanges();
+
+        return RedirectToAction("Index");
+    }
+
+    return View(model);
+}
+
+[HttpGet]
+public IActionResult Delete(int id)
+{
+    Recipe recipe = _context.Recipes.Find(id);
+    if (recipe == null)
+    {
+        return NotFound();
+    }
+
+    return View(recipe);
+}
+
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public IActionResult DeleteConfirmed(int id)
+{
+    Recipe recipe = _context.Recipes.Find(id);
+    if (recipe == null)
+    {
+        return NotFound();
+    }
+
+    _context.Recipes.Remove(recipe);
+    _context.SaveChanges();
+
+    return RedirectToAction("Index");
+}
 }
