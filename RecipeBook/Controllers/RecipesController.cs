@@ -115,6 +115,8 @@ public class RecipesController : Controller
         Recipe recipe = _context.Recipes
             .Include(r => r.IRJoin)
             .ThenInclude(join => join.Ingredient)
+            .Include(r => r.RTJoin)
+            .ThenInclude(join => join.Tag)
             .FirstOrDefault(r => r.RecipeId == id);
 
         if (recipe == null)
@@ -128,11 +130,41 @@ public class RecipesController : Controller
     [HttpPost]
     public IActionResult Edit(int id, Recipe model)
     {
-
         if (ModelState.IsValid)
         {
-            // Update the recipe in the database
+            // Update the recipe properties
             _context.Entry(model).State = EntityState.Modified;
+
+            // Update or add ingredients
+            foreach (var join in model.IRJoin)
+            {
+                if (join.Ingredient != null)
+                {
+                    _context.Entry(join.Ingredient).State = EntityState.Modified;
+                }
+                else
+                {
+                    _context.Ingredients.Add(join.Ingredient);
+                }
+
+                _context.Entry(join).State = EntityState.Modified;
+            }
+
+            // Update or add tags
+            foreach (var join in model.RTJoin)
+            {
+                if (join.Tag != null)
+                {
+                    _context.Entry(join.Tag).State = EntityState.Modified;
+                }
+                else
+                {
+                    _context.Tags.Add(join.Tag);
+                }
+
+                _context.Entry(join).State = EntityState.Modified;
+            }
+
             _context.SaveChanges();
 
             return RedirectToAction("Index");
