@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using RecipeBook.Models;
 using System.Linq;
 
@@ -12,6 +12,7 @@ namespace RecipeBook.Controllers
     {
         private readonly RecipeBookContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public HomeController(UserManager<ApplicationUser> userManager, RecipeBookContext db)
         {
             _userManager = userManager;
@@ -19,6 +20,7 @@ namespace RecipeBook.Controllers
         }
 
         [HttpGet("/")]
+        [Authorize] 
         public async Task<ActionResult> Index()
         {
             string userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -31,8 +33,3 @@ namespace RecipeBook.Controllers
         }
     }
 }
-
-// Item[] items = _db.Items
-//                       .Where(entry => entry.User.Id == currentUser.Id)
-//                       .ToArray();
-//           model.Add("items", items);

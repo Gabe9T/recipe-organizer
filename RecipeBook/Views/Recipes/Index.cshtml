@@ -14,4 +14,14 @@
     <hr />
 }
 
-<p>@Html.ActionLink("Add A New Recipe", "Create")</p>
+@if (User.Identity.IsAuthenticated)
+        {
+@Html.ActionLink("Add A New Recipe", "Create")
+            
+        }
+        else
+        {
+
+        <p>@Html.ActionLink("Login To Add A Recipe", "Login", "Account")</p>
+        <p>@Html.ActionLink("Dont Have An Account? Sign Up!", "Register", "Account")</p>
+        }

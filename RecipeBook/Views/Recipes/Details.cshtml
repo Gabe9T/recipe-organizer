@@ -20,16 +20,22 @@
                 @foreach (IngredientRecipe join in Model.IRJoin)
                 {
                     <li>@join.Ingredient.Name - @join.Quantity </li>
-                    //add join unit for quanity???
                 }
             </ul>
         }
 
         <br />
+       @* add this later to if statement
+        && Model.User.Id == User.Identity.Name*@
 
-@Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" }) |
-@Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger" }) |
-@Html.ActionLink("Back To List", "Index", "Recipes", null, new { @class = "btn btn-primary" }) 
+        @if (User.Identity.IsAuthenticated )
+        {
+            @Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" })
+            
+            @Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger" })
+        }
+        
+        @Html.ActionLink("Back To List", "Index", "Recipes", null, new { @class = "btn btn-primary" }) 
         
     </div>
 </div>
