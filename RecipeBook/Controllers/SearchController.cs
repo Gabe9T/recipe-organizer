@@ -32,15 +32,6 @@ public class SearchController : Controller
                     .Where(recipe => recipe.IRJoin.Any(join => join.Ingredient.Name.Contains(searchTerm)))
                     .ToListAsync();
                 return View(ingRecResults);
-                // Ingredient ing = _db.Ingredients.FirstOrDefault(i => i.Name == searchTerm);
-                // List<Recipe> ingRecResults = _db.Recipes
-                //     .Include(ir => ir.IRJoin)
-                //     .ThenInclude(join => join.Ingredient)
-                //     .Where(i => i.IngredientName == searchTerm)
-
-                // List<Recipe> ingRecResults = _db.Recipes
-                //     .Include(r => r.IRJoin)
-                //     .ThenInclude(j => j.IngredientId)
         }
     }
 }
