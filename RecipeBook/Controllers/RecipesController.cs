@@ -30,7 +30,6 @@ public class RecipesController : Controller
     {
         if (ModelState.IsValid)
         {
-            // Create and save the recipe and ingredients to the database
             Recipe recipe = new Recipe
             {
                 Name = model.RecipeName,
@@ -65,6 +64,4 @@ public class RecipesController : Controller
             .FirstOrDefault(r => r.RecipeId == id);
         return View(rec);
     }
-
-    // Other actions and methods as needed
 }
