@@ -4,13 +4,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.Security.Claims;
 
 public class RecipesController : Controller
 {
     private readonly RecipeBookContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public RecipesController(RecipeBookContext context)
+    public RecipesController(UserManager<ApplicationUser> userManager, RecipeBookContext context)
     {
+        _userManager = userManager;
         _context = context;
     }
 
@@ -27,7 +32,7 @@ public class RecipesController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(RecipeViewModel model)
+    public async Task<ActionResult> Create(RecipeViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -83,6 +88,9 @@ public class RecipesController : Controller
                 recipe.RTJoin.Add(recipeTag);
                 _context.RecipeTags.Add(recipeTag);
             }
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+            recipe.User = currentUser;
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
             return RedirectToAction("Index");
