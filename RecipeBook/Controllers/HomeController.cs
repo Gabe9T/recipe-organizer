@@ -20,7 +20,7 @@ namespace RecipeBook.Controllers
         }
 
         [HttpGet("/")]
-        [Authorize] 
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             string userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -28,6 +28,8 @@ namespace RecipeBook.Controllers
             if (currentUser != null)
             {
                 Recipe[] recipes = _db.Recipes.Where(r => r.User.Id == currentUser.Id).ToArray();
+
+                return View(recipes);
             }
             return View();
         }
