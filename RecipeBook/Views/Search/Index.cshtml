@@ -11,7 +11,7 @@
 
     @foreach (Recipe r in Model)
     {
-        <h3>@Html.ActionLink($"{r.Name}", "Details", new { id = r.RecipeId })</h3>
+        <h3>@Html.ActionLink($"{r.Name}", "Details", "Recipes", new { id = r.RecipeId })</h3>
     }
 }
 
@@ -24,6 +24,6 @@
 
     @foreach (Ingredient i in Model)
     {
-        <h3>@Html.ActionLink($"{i.Name}", "Details", new { id = i.IngredientId })</h3>
+        <h3>@Html.ActionLink($"{i.Name}", "Details", "Ingredients", new { id = i.IngredientId })</h3>
     }
 }

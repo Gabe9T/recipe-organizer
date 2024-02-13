@@ -29,7 +29,7 @@ public class SearchController : Controller
                 return View(ingResults);
             default:
                 List<Recipe> ingRecResults = await _db.Recipes
-                    .Where(recipe => recipe.IRJoin.Any(join => join.Ingredient.Name == searchTerm))
+                    .Where(recipe => recipe.IRJoin.Any(join => join.Ingredient.Name.Contains(searchTerm)))
                     .ToListAsync();
                 return View(ingRecResults);
                 // Ingredient ing = _db.Ingredients.FirstOrDefault(i => i.Name == searchTerm);
