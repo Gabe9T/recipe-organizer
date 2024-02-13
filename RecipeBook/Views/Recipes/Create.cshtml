@@ -3,43 +3,43 @@
 @using (Html.BeginForm("Create", "Recipes", FormMethod.Post))
 {
     <div>
-        <label for="RecipeName">Recipe Name:</label>
-        @Html.TextBoxFor(m => m.RecipeName, new { required = "required" })
-        @Html.ValidationMessageFor(m => m.RecipeName)
-    </div>
+    <label for="RecipeName">Recipe Name:</label>
+    @Html.TextBoxFor(m => m.RecipeName, new { required = "required" })
+    @Html.ValidationMessageFor(m => m.RecipeName)
+</div>
 
     <div>
-        <label for="Description">Description:</label>
-        @Html.TextAreaFor(m => m.Description)
-    </div>
+    <label for="Description">Description:</label>
+    @Html.TextAreaFor(m => m.Description)
+</div>
 
     <div>
-        <label for="Instructions">Instructions:</label>
-        @Html.TextAreaFor(m => m.Instructions, new { required = "required" })
-        @Html.ValidationMessageFor(m => m.Instructions)
-    </div>
+    <label for="Instructions">Instructions:</label>
+    @Html.TextAreaFor(m => m.Instructions, new { required = "required" })
+    @Html.ValidationMessageFor(m => m.Instructions)
+</div>
 
-     <div>
-        <label for="ImageUrl">Image URL:</label>
-        @Html.TextBoxFor(m => m.ImageUrl)
-    </div>
+    <div>
+    <label for="ImageUrl">Image URL:</label>
+    @Html.TextBoxFor(m => m.ImageUrl)
+</div>
 
     <h3>Ingredients:</h3>
-<div id="ingredientContainer">
+    <div id="ingredientContainer">
     @for (int i = 0; i < Model.Ingredients.Count; i++)
-    {
-        <div class="ingredient">
-            <label for="Ingredients">Ingredient:</label>
-            @Html.TextBoxFor(m => m.Ingredients[i].Name, new { required = "required" })
+        {
+            <div class="ingredient">
+                <label for="Ingredients">Ingredient:</label>
+                @Html.TextBoxFor(m => m.Ingredients[i].Name, new { required = "required" })
 
-            <label for="Quantities">Quantity:</label>
-            @Html.TextBoxFor(m => m.Ingredients[i].Quantity, new { required = "required" })
+                <label for="Quantities">Quantity:</label>
+                @Html.TextBoxFor(m => m.Ingredients[i].Quantity, new { required = "required" })
 
-            <button type="button" class="removeIngredient">Remove</button>
-        </div>
-    }
-</div>
-<button type="button" id="addIngredient">Add Ingredient</button>
+                <button type="button" class="removeIngredient">Remove</button>
+            </div>
+        }
+    </div>
+    <button type="button" id="addIngredient">Add Ingredient</button>
 
     <input type="submit" value="Submit" />
 }
@@ -53,12 +53,15 @@
             const newIngredientDiv = document.createElement("div");
             newIngredientDiv.className = "ingredient";
 
-            newIngredientDiv.innerHTML = `
+            // Get the current count of ingredients
+            const index = document.querySelectorAll('.ingredient').length;
+
+            newIngredientDiv.innerHTML = ` 
                 <label for="Ingredients">Ingredient:</label>
-                <input type="text" name="Ingredients" required />
+                <input type="text" name="Ingredients[${index}].Name" required />
 
                 <label for="Quantities">Quantity:</label>
-                <input type="text" name="Quantities" required />
+                <input type="text" name="Ingredients[${index}].Quantity" required />
 
                 <button type="button" class="removeIngredient">Remove</button>
             `;
@@ -73,4 +76,3 @@
         });
     });
 </script>
-

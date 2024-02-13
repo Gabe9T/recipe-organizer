@@ -1,0 +1,13 @@
+@model RecipeBook.Models.Recipe
+
+<div class="content">
+    <h2>Are you sure you want to delete @Model.Name?</h2>
+
+    @Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)
+    @using (Html.BeginForm())
+    {
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    }
+    @Html.ActionLink("Back To Details", "Details", "Recipes", new { id = Model.RecipeId }, new { @class = "btn btn-success" })
+</div>
+
