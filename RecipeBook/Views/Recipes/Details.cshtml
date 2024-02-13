@@ -1,0 +1,35 @@
+@model RecipeBook.Models.Recipe
+@using RecipeBook.Models
+
+<div class="content">
+    <div class="details">
+        <h2>Details</h2>
+        <h3>Name: @Model.Name</h3>
+        <p>Description: @Model.Description</p>
+        <p>Instructions: @Model.Instructions</p>
+        <img src="@Model.ImageUrl" alt="Recipe Image" />
+        <p>Rating: @Model.Rating</p>
+
+        @if (@Model.IRJoin.Count == 0)
+        {
+            <p>This recipe does not contain any ingredients</p>
+        }
+        else
+        {
+            <h4>Ingredients:</h4>
+            <ul>
+                @foreach (IngredientRecipe join in Model.IRJoin)
+                {
+                    <li>@join.Ingredient.Name - @join.Quantity </li>
+                    //add join unit for quanity???
+                }
+            </ul>
+        }
+
+        <br />
+
+        @Html.ActionLink("Edit recipe", "Edit") |
+        @Html.ActionLink("Delete recipe", "Delete") |
+        @Html.ActionLink("Back To List", "Index", "Recipe")
+    </div>
+</div>

@@ -1,64 +1,22 @@
-// using Microsoft.AspNetCore.Identity;
-// using System.Collections.Generic;
-// using Microsoft.AspNetCore.Mvc;
-// using System.Threading.Tasks;
-// using System.Security.Claims;
-// using RecipeBook.Models;
-// using System.Linq;
-
-// namespace RecipeBook.Controllers
-// {
-//     public class RecipesController : Controller
-//     {
-//         private readonly RecipeBookContext _db;
-//         private readonly UserManager<ApplicationUser> _userManager;
-//         public RecipesController(UserManager<ApplicationUser> userManager, RecipeBookContext db)
-//         {
-//             _userManager = userManager;
-//             _db = db;
-//         }
-
-//         public ActionResult Create()
-//         {
-//             View()
-//         }
-
-//         [HttpPost]
-//         public ActionResult Create(Recipe rec)
-//         {
-//             if (!ModelState.IsValue)
-//             {
-//                 return View();
-//             }
-//             else
-//             {
-//                 //Ingredient newIng =new(rec.RecipeId, ing-name, ing-url) 
-//                 _db.Ingredients.Add(ing);
-//                 _db.Recipes.Add(rec);
-//                 // await add join table entries?
-
-
-//                 _db.SaveChanges();
-//                 return RedirectToAction("Create", "Ingredients");
-//             }
-//         }
-//     }
-// }
-
 using Microsoft.AspNetCore.Mvc;
 using RecipeBook.Models;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 public class RecipesController : Controller
 {
     private readonly RecipeBookContext _context;
 
-    private readonly ILogger<RecipesController> _logger;
-    public RecipesController()
-
     public RecipesController(RecipeBookContext context)
     {
         _context = context;
+    }
+
+    public ActionResult Index()
+    {
+        List<Recipe> model = _context.Recipes.ToList();
+        return View(model);
     }
 
     [HttpGet]
@@ -77,13 +35,14 @@ public class RecipesController : Controller
             {
                 Name = model.RecipeName,
                 Instructions = model.Instructions,
-                // Other properties
+                Description = model.Description,
+                ImageUrl = model.ImageUrl
             };
 
-            foreach (string ingredientName in model.Ingredients)
+            foreach (var ingredientViewModel in model.Ingredients)
             {
-                Ingredient ingredient = new Ingredient { Name = ingredientName };
-                IngredientRecipe ingredientRecipe = new IngredientRecipe { Ingredient = ingredient, Recipe = recipe };
+                Ingredient ingredient = new Ingredient { Name = ingredientViewModel.Name };
+                IngredientRecipe ingredientRecipe = new IngredientRecipe { Ingredient = ingredient, Recipe = recipe, Quantity = ingredientViewModel.Quantity };
                 recipe.IRJoin.Add(ingredientRecipe);
                 _context.Ingredients.Add(ingredient);
                 _context.IngredientRecipes.Add(ingredientRecipe);
@@ -92,10 +51,19 @@ public class RecipesController : Controller
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index");
         }
 
         return View(model);
+    }
+
+    public ActionResult Details(int id)
+    {
+        Recipe rec = _context.Recipes
+            .Include(r => r.IRJoin)
+            .ThenInclude(join => join.Ingredient)
+            .FirstOrDefault(r => r.RecipeId == id);
+        return View(rec);
     }
 
     // Other actions and methods as needed
