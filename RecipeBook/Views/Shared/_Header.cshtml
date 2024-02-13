@@ -1,4 +1,3 @@
-
 @if (User.Identity.IsAuthenticated)
 {
     <p>Hello @User.Identity.Name!</p>
@@ -20,3 +19,13 @@ else
     <img src="~/assets/images/textlogo.png" alt="dish logo" />
 </div>
 
+@using (Html.BeginForm("Index", "Search", FormMethod.Get))
+{
+    @Html.Label("searchType", "Search for:")
+    @Html.RadioButton("searchType", "rec", true, new { id = "rec-radio" }) <label for="rec-radio">Recipe</label>
+    @Html.RadioButton("searchType", "ing", new { id = "ing-radio" }) <label for="ing-radio">Ingredient</label>
+    @Html.RadioButton("searchType", "ing-rec", new { id = "ing-rec-radio" }) <label for="ing-rec-radio">Recipe by ingredient</label>
+    @Html.TextBox("searchTerm")
+
+    <input type="submit" value="Search">
+}

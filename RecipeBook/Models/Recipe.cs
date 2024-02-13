@@ -13,6 +13,6 @@ public class Recipe
     public int Rating { get; set; }
     public ApplicationUser User { get; set; }
     public List<IngredientRecipe> IRJoin { get; } = new List<IngredientRecipe>();
-    public List<RecipeTag> RTJoin { get; }
+    public List<RecipeTag> RTJoin { get; } = new List<RecipeTag>();
 
 }

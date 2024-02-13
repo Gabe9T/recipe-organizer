@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RecipeBook.Migrations
 {
-    public partial class ChangeName : Migration
+    public partial class RemoveQuantitiesTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,21 +81,6 @@ namespace RecipeBook.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ingredients", x => x.IngredientId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Quantities",
-                columns: table => new
-                {
-                    QuantityId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Amount = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Quantities", x => x.QuantityId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -271,40 +256,15 @@ namespace RecipeBook.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "IngredientQuantities",
-                columns: table => new
-                {
-                    IngredientQuantityId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    IngredientId = table.Column<int>(type: "int", nullable: false),
-                    QuantityId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IngredientQuantities", x => x.IngredientQuantityId);
-                    table.ForeignKey(
-                        name: "FK_IngredientQuantities_Ingredients_IngredientId",
-                        column: x => x.IngredientId,
-                        principalTable: "Ingredients",
-                        principalColumn: "IngredientId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_IngredientQuantities_Quantities_QuantityId",
-                        column: x => x.QuantityId,
-                        principalTable: "Quantities",
-                        principalColumn: "QuantityId",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "IngredientRecipes",
                 columns: table => new
                 {
                     IngredientRecipeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IngredientId = table.Column<int>(type: "int", nullable: false),
-                    RecipeId = table.Column<int>(type: "int", nullable: false)
+                    RecipeId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -389,16 +349,6 @@ namespace RecipeBook.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientQuantities_IngredientId",
-                table: "IngredientQuantities",
-                column: "IngredientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IngredientQuantities_QuantityId",
-                table: "IngredientQuantities",
-                column: "QuantityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_IngredientRecipes_IngredientId",
                 table: "IngredientRecipes",
                 column: "IngredientId");
@@ -442,9 +392,6 @@ namespace RecipeBook.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "IngredientQuantities");
-
-            migrationBuilder.DropTable(
                 name: "IngredientRecipes");
 
             migrationBuilder.DropTable(
@@ -452,9 +399,6 @@ namespace RecipeBook.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Quantities");
 
             migrationBuilder.DropTable(
                 name: "Ingredients");

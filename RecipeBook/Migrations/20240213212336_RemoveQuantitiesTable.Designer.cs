@@ -11,8 +11,8 @@ using RecipeBook.Models;
 namespace RecipeBook.Migrations
 {
     [DbContext(typeof(RecipeBookContext))]
-    [Migration("20240212231350_NewTest")]
-    partial class NewTest
+    [Migration("20240213212336_RemoveQuantitiesTable")]
+    partial class RemoveQuantitiesTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -230,27 +230,6 @@ namespace RecipeBook.Migrations
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("RecipeBook.Models.IngredientQuantity", b =>
-                {
-                    b.Property<int>("IngredientQuantityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuantityId")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientQuantityId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.HasIndex("QuantityId");
-
-                    b.ToTable("IngredientQuantities");
-                });
-
             modelBuilder.Entity("RecipeBook.Models.IngredientRecipe", b =>
                 {
                     b.Property<int>("IngredientRecipeId")
@@ -259,6 +238,9 @@ namespace RecipeBook.Migrations
 
                     b.Property<int>("IngredientId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Quantity")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
@@ -270,20 +252,6 @@ namespace RecipeBook.Migrations
                     b.HasIndex("RecipeId");
 
                     b.ToTable("IngredientRecipes");
-                });
-
-            modelBuilder.Entity("RecipeBook.Models.Quantity", b =>
-                {
-                    b.Property<int>("QuantityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Amount")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("QuantityId");
-
-                    b.ToTable("Quantities");
                 });
 
             modelBuilder.Entity("RecipeBook.Models.Recipe", b =>
@@ -403,25 +371,6 @@ namespace RecipeBook.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RecipeBook.Models.IngredientQuantity", b =>
-                {
-                    b.HasOne("RecipeBook.Models.Ingredient", "Ingredient")
-                        .WithMany("IQJoin")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RecipeBook.Models.Quantity", "Quantity")
-                        .WithMany("JoinEntities")
-                        .HasForeignKey("QuantityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Quantity");
-                });
-
             modelBuilder.Entity("RecipeBook.Models.IngredientRecipe", b =>
                 {
                     b.HasOne("RecipeBook.Models.Ingredient", "Ingredient")
@@ -459,7 +408,7 @@ namespace RecipeBook.Migrations
                         .IsRequired();
 
                     b.HasOne("RecipeBook.Models.Tag", "Tag")
-                        .WithMany("JoinEntities")
+                        .WithMany("RTJoin")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -471,14 +420,7 @@ namespace RecipeBook.Migrations
 
             modelBuilder.Entity("RecipeBook.Models.Ingredient", b =>
                 {
-                    b.Navigation("IQJoin");
-
                     b.Navigation("IRJoin");
-                });
-
-            modelBuilder.Entity("RecipeBook.Models.Quantity", b =>
-                {
-                    b.Navigation("JoinEntities");
                 });
 
             modelBuilder.Entity("RecipeBook.Models.Recipe", b =>
@@ -490,7 +432,7 @@ namespace RecipeBook.Migrations
 
             modelBuilder.Entity("RecipeBook.Models.Tag", b =>
                 {
-                    b.Navigation("JoinEntities");
+                    b.Navigation("RTJoin");
                 });
 #pragma warning restore 612, 618
         }

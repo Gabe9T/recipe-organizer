@@ -41,6 +41,20 @@
     </div>
     <button type="button" id="addIngredient">Add Ingredient</button>
 
+    <h3>Tags:</h3>
+    <div id="tagContainer">
+    @for (int i = 0; i < Model.Tags.Count; i++)
+        {
+            <div class="tag">
+                <label for="Tags">Tag:</label>
+                @Html.TextBoxFor(m => m.Tags[i].Name, new { required = "required" })
+
+                <button type="button" class="removeTag">Remove</button>
+            </div>
+        }
+    </div>
+    <button type="button" id="addTag">Add Tag</button>
+
     <input type="submit" value="Submit" />
 }
 
@@ -72,6 +86,34 @@
             const removeIngredientButton = newIngredientDiv.querySelector(".removeIngredient");
             removeIngredientButton.addEventListener("click", function () {
                 ingredientContainer.removeChild(newIngredientDiv);
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addTagButton = document.getElementById("addTag");
+        const tagContainer = document.getElementById("tagContainer");
+
+        addTagButton.addEventListener("click", function () {
+            const newTagDiv = document.createElement("div");
+            newTagDiv.className = "tag";
+
+            const tagIndex = document.querySelectorAll('.tag').length;
+
+            newTagDiv.innerHTML = ` 
+                <label for="Tags">Tag:</label>
+                <input type="text" name="Tags[${tagIndex}].Name" required />
+
+                <button type="button" class="removeTag">Remove</button>
+            `;
+
+            tagContainer.appendChild(newTagDiv);
+
+            // Add event listener for removing the tag
+            const removeTagButton = newTagDiv.querySelector(".removeTag");
+            removeTagButton.addEventListener("click", function () {
+                tagContainer.removeChild(newTagDiv);
             });
         });
     });
