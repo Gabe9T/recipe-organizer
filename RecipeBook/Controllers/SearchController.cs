@@ -27,6 +27,11 @@ public class SearchController : Controller
                     .Where(i => i.Name.Contains(searchTerm))
                     .ToListAsync();
                 return View(ingResults);
+            case "tag":
+                    List<Recipe> tagResults = await _db.Recipes
+                        .Where(recipe => recipe.RTJoin.Any(rt => rt.Tag.Name.Contains(searchTerm)))
+                        .ToListAsync();
+                    return View(tagResults);
             default:
                 List<Recipe> ingRecResults = await _db.Recipes
                     .Where(recipe => recipe.IRJoin.Any(join => join.Ingredient.Name.Contains(searchTerm)))
