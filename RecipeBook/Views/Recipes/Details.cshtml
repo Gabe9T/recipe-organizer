@@ -44,7 +44,7 @@
         && Model.User.Id == User.Identity.Name*@
 
 
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity.IsAuthenticated && ViewBag.UserBool)
         {
             @Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" })
 

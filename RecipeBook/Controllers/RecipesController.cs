@@ -36,12 +36,16 @@ public class RecipesController : Controller
     {
         if (ModelState.IsValid)
         {
+            string userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+            ViewBag.UserId = currentUser.Id;
             Recipe recipe = new Recipe
             {
                 Name = model.RecipeName,
                 Instructions = model.Instructions,
                 Description = model.Description,
-                ImageUrl = model.ImageUrl
+                ImageUrl = model.ImageUrl,
+                UserId = model.UserId
             };
 
             foreach (var ingredientViewModel in model.Ingredients)
@@ -88,8 +92,8 @@ public class RecipesController : Controller
                 recipe.RTJoin.Add(recipeTag);
                 _context.RecipeTags.Add(recipeTag);
             }
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+            // string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
             recipe.User = currentUser;
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
@@ -98,7 +102,7 @@ public class RecipesController : Controller
         return View(model);
     }
 
-    public ActionResult Details(int id)
+    public async Task<ActionResult> Details(int id)
     {
         Recipe rec = _context.Recipes
             .Include(r => r.IRJoin)
@@ -106,6 +110,17 @@ public class RecipesController : Controller
             .Include(rec => rec.RTJoin)
             .ThenInclude(join => join.Tag)
             .FirstOrDefault(r => r.RecipeId == id);
+
+        if (User.Identity.IsAuthenticated)
+        {
+
+            string userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+            bool recipeOwner = rec.UserId == currentUser.Id;
+            ViewBag.UserBool = recipeOwner;
+            return View(rec);
+
+        }
         return View(rec);
     }
 

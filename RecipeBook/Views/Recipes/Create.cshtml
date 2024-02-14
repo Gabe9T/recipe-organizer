@@ -1,32 +1,36 @@
 @model RecipeBook.Models.RecipeViewModel
+@using RecipeBook.Models
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 
 @using (Html.BeginForm("Create", "Recipes", FormMethod.Post))
 {
+    @Html.HiddenFor("UserId", @ViewBag.UserId)
     <div>
-    <label for="RecipeName">Recipe Name:</label>
-    @Html.TextBoxFor(m => m.RecipeName, new { required = "required" })
-    @Html.ValidationMessageFor(m => m.RecipeName)
-</div>
+        <label for="RecipeName">Recipe Name:</label>
+        @Html.TextBoxFor(m => m.RecipeName, new { required = "required" })
+        @Html.ValidationMessageFor(m => m.RecipeName)
+    </div>
 
     <div>
-    <label for="Description">Description:</label>
-    @Html.TextAreaFor(m => m.Description)
-</div>
+        <label for="Description">Description:</label>
+        @Html.TextAreaFor(m => m.Description)
+    </div>
 
     <div>
-    <label for="Instructions">Instructions:</label>
-    @Html.TextAreaFor(m => m.Instructions, new { required = "required" })
-    @Html.ValidationMessageFor(m => m.Instructions)
-</div>
+        <label for="Instructions">Instructions:</label>
+        @Html.TextAreaFor(m => m.Instructions, new { required = "required" })
+        @Html.ValidationMessageFor(m => m.Instructions)
+    </div>
 
     <div>
-    <label for="ImageUrl">Image URL:</label>
-    @Html.TextBoxFor(m => m.ImageUrl)
-</div>
+        <label for="ImageUrl">Image URL:</label>
+        @Html.TextBoxFor(m => m.ImageUrl)
+    </div>
 
     <h3>Ingredients:</h3>
     <div id="ingredientContainer">
-    @for (int i = 0; i < Model.Ingredients.Count; i++)
+        @for (int i = 0; i < Model.Ingredients.Count; i++)
         {
             <div class="ingredient">
                 <label for="Ingredients">Ingredient:</label>
@@ -43,7 +47,7 @@
 
     <h3>Tags:</h3>
     <div id="tagContainer">
-    @for (int i = 0; i < Model.Tags.Count; i++)
+        @for (int i = 0; i < Model.Tags.Count; i++)
         {
             <div class="tag">
                 <label for="Tags">Tag:</label>
