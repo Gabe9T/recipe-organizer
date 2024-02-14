@@ -10,6 +10,7 @@ namespace RecipeBook.Models
         public DbSet<Tag> Tags { get; set; }
         public DbSet<IngredientRecipe> IngredientRecipes { get; set; }
         public DbSet<RecipeTag> RecipeTags { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         public RecipeBookContext(DbContextOptions options) : base(options) { }
     }

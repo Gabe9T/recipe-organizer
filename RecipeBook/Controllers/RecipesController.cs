@@ -105,6 +105,7 @@ public class RecipesController : Controller
     public async Task<ActionResult> Details(int id)
     {
         Recipe rec = _context.Recipes
+            .Include(r => r.Ratings)
             .Include(r => r.IRJoin)
             .ThenInclude(join => join.Ingredient)
             .Include(rec => rec.RTJoin)
@@ -267,4 +268,12 @@ public class RecipesController : Controller
         return RedirectToAction("Index");
     }
 
+    [HttpPost]
+    public IActionResult Rate(Rating rating, int recId)
+    {
+        _context.Ratings.Add(rating);
+        _context.SaveChanges();
+        return RedirectToAction("Details", "Recipes", new { id = recId });
+
+    }
 }

@@ -15,5 +15,5 @@ public class Recipe
     public ApplicationUser User { get; set; }
     public List<IngredientRecipe> IRJoin { get; } = new List<IngredientRecipe>();
     public List<RecipeTag> RTJoin { get; } = new List<RecipeTag>();
-
+    public List<Rating> Ratings { get; set; }
 }
