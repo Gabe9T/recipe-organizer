@@ -14,7 +14,7 @@ namespace RecipeBook.Models
         public string Description { get; set; }
 
         public string ImageUrl { get; set; }
-
+        public string UserId { get; set; }
         public List<IngredientViewModel> Ingredients { get; set; } = new List<IngredientViewModel>();
         public List<TagViewModel> Tags { get; set; } = new List<TagViewModel>();
     }

@@ -11,6 +11,7 @@ public class Recipe
     public string Instructions { get; set; }
     public string ImageUrl { get; set; }
     public int Rating { get; set; }
+    public string UserId { get; set; }
     public ApplicationUser User { get; set; }
     public List<IngredientRecipe> IRJoin { get; } = new List<IngredientRecipe>();
     public List<RecipeTag> RTJoin { get; } = new List<RecipeTag>();
