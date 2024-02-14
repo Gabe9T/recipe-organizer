@@ -1,27 +1,30 @@
 @using RecipeBook.Models;
-
+<div class="center">
 <h2>Recipes</h2>
-
+</div>
 @if (Model.Count == 0)
 {
     <h4>No recipes have been submitted.</h4>
 }
-
-@foreach (Recipe r in Model)
-{
-    <h3>@Html.ActionLink($"{r.Name}", "Details", new { id = r.RecipeId })</h3>
-    <img src="@r.ImageUrl" alt="Recipe Image">
-    <hr />
-}
+<div class="recipe-display">
+    @foreach (Recipe r in Model)
+    {
+        <a href="@Url.Action("Details", new { id = r.RecipeId })" class="recipe">
+            <div>
+                <img src="@r.ImageUrl" alt="Recipe Image">
+                <hr />
+                                <h3>@r.Name</h3>
+            </div>
+        </a>
+    }
+</div>
 
 @if (User.Identity.IsAuthenticated)
-        {
-@Html.ActionLink("Add A New Recipe", "Create")
-            
-        }
-        else
-        {
-
-        <p>@Html.ActionLink("Login To Add A Recipe", "Login", "Account")</p>
-        <p>@Html.ActionLink("Dont Have An Account? Sign Up!", "Register", "Account")</p>
-        }
+{
+    @Html.ActionLink("Add A New Recipe", "Create")
+}
+else
+{
+<p>@Html.ActionLink("Login To Add A Recipe", "Login", "Account", null, new { @class = "btn btn-primary" })</p>
+    <p>@Html.ActionLink("Dont Have An Account? Sign Up!", "Register", "Account", null, new { @class = "btn btn-primary" })</p>
+}
