@@ -3,13 +3,13 @@
 
 <div class="content">
     <div class="details">
-        <h2>@Model.Name Details</h2>
-        <p>Description: @Model.Description</p>
-        <p>Instructions: @Model.Instructions</p>
+        <h1> @Model.Name</h1>
         <img src="@Model.ImageUrl" alt="Recipe Image" />
         <p>Rating: @Model.Rating</p>
+        <p>Description: @Model.Description</p>
+        <p>Instructions: @Model.Instructions</p>
 
-        @if (@Model.IRJoin.Count == 0)
+        @if (Model.IRJoin.Count == 0)
         {
             <p>This recipe does not contain any ingredients</p>
         }
@@ -24,7 +24,7 @@
             </ul>
         }
 
-        @if (@Model.RTJoin.Count == 0)
+        @if (Model.RTJoin.Count == 0)
         {
             <p>This recipe does not have any tags</p>
         }
@@ -40,14 +40,10 @@
         }
 
         <br />
-        @* add this later to if statement
-        && Model.User.Id == User.Identity.Name*@
-
 
         @if (User.Identity.IsAuthenticated)
         {
             @Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" })
-
             @Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger" })
         }
 
