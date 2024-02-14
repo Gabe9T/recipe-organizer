@@ -22,7 +22,8 @@
 }
 
 .recipe img {
-    max-width: 100%;
+    width: 250px;
+    height: 150px;
 }
 
 .recipe hr {
