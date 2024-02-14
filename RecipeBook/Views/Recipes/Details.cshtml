@@ -1,11 +1,22 @@
 @model RecipeBook.Models.Recipe
 @using RecipeBook.Models
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Linq
+
+@{
+    var nums = Enumerable.Range(1, 10);
+    var selectList = new SelectList(nums);
+
+    double avg = Model.Ratings.Select(r => r.Value).Average();
+    double simpAvg = Math.Round(avg, 2);
+
+}
 
 <div class="content">
     <div class="details">
         <h1> @Model.Name</h1>
         <img src="@Model.ImageUrl" alt="Recipe Image" />
-        <p>Rating: @Model.Rating</p>
+        <p>Rating: @simpAvg</p>
         <p>Description: @Model.Description</p>
         <p>Instructions: @Model.Instructions</p>
 
@@ -41,11 +52,27 @@
 
         <br />
 
-        @if (User.Identity.IsAuthenticated && ViewBag.UserBool)
+        @if (User.Identity.IsAuthenticated)
         {
-            @Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" })
-            @Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger" })
+            @using (Html.BeginForm("Rate", "Recipes", FormMethod.Post))
+            {
+                @Html.Hidden("recId", @Model.RecipeId)
+                @Html.Hidden("RecipeId", @Model.RecipeId)
+                @Html.DropDownList("Value", selectList, "Rate this recipe: ")
+                <input type="submit" value="Rate" />
+            }
+            @if (ViewBag.UserBool)
+            {
+                @Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger" })
+            }
         }
+
+        @* @if (User.Identity.IsAuthenticated && ViewBag.UserBool)
+        {
+        @Html.ActionLink("Edit Recipe", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Delete Recipe", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger" })
+        } *@
 
         @Html.ActionLink("Back To List", "Index", "Recipes", null, new { @class = "btn btn-primary" })
     </div>
