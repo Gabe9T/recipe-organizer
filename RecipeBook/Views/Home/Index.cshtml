@@ -1,21 +1,32 @@
 @using RecipeBook.Models
 
-@if (User.Identity.IsAuthenticated)
-{
-    <h2>Hello @User.Identity.Name!</h2>
-    <h3>You've contributed @Model.Length recipes:</h3>
-    <hr />
-    <ul>
-        @foreach (Recipe r in Model)
-        {
-            <li>@Html.ActionLink($"{r.Name}", "Details", "Recipes", new { id = r.RecipeId })</li>
-        }
-    </ul>
-}
+<div class="container">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="text-center">
+            <h2>Hello, @User.Identity.Name!</h2>
+            <h3>You've contributed @Model.Length recipes:</h3>
+            <hr />
+            <ul class="list-group">
+                @foreach (Recipe r in Model)
+                {
+                    <li class="list-group-item">
+                        @Html.ActionLink(r.Name, "Details", "Recipes", new { id = r.RecipeId }, new { @class = "text-decoration-none" })
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <h2>Log in to contribute to our recipe database!</h2>
+        </div>
+    }
 
-else
-{
-    <h2>Log in to contribute to our recipe database!</h2>
-}
-
-<p>@Html.ActionLink("Recipe create", "Create", "Recipes")</p>
+    <div class="text-center mt-4">
+        <p>
+            @Html.ActionLink("Create a Recipe", "Create", "Recipes", null, new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>

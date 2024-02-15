@@ -1,32 +1,56 @@
-@if (User.Identity.IsAuthenticated)
-{
-    <p>Signed in as: @User.Identity.Name</p>
-    @using (Html.BeginForm("LogOff", "Account"))
-    {
-        <input type="submit" class="btn btn-default" value="Log out" />
-    }
-}
-else
-{
-    <p>@Html.ActionLink("Register", "Register", "Account")</p>
-    <p>@Html.ActionLink("Log in", "Login", "Account")</p>
-}
-<p>@Html.ActionLink("Home", "Index", "Home")</p>
-<p>@Html.ActionLink("Recipes", "Index", "Recipes")</p>
-
-<div id="navbar">
-    <img src="~/assets/images/dishlogo.png" alt="dish logo" />
-    <img src="~/assets/images/textlogo.png" alt="dish logo" />
+<div id="navbar" class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="~/assets/images/dishlogo.png" alt="dish logo" />
+            <img src="~/assets/images/textlogo.png" alt="dish logo" />
+        </div>
+        <div class="col-md-6 text-end">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <p class="mt-3">Signed in as: @User.Identity.Name</p>
+                @using (Html.BeginForm("LogOff", "Account"))
+                {
+                    <button type="submit" class="btn btn-outline-secondary mt-2">Log out</button>
+                }
+            }
+            else
+            {
+                @Html.ActionLink("Log in", "Login", "Account", null, new { @class = "btn btn-primary" })
+            }
+        </div>
+    </div>
 </div>
 
-@using (Html.BeginForm("Index", "Search", FormMethod.Get))
-{
-    @Html.Label("searchType", "Search for:")
-    @Html.RadioButton("searchType", "rec", true, new { id = "rec-radio" }) <label for="rec-radio">Recipe</label>
-    @Html.RadioButton("searchType", "ing", new { id = "ing-radio" }) <label for="ing-radio">Ingredient</label>
-    @Html.RadioButton("searchType", "ing-rec", new { id = "ing-rec-radio" }) <label for="ing-rec-radio">Recipe by ingredient</label>
-    @Html.RadioButton("searchType", "tag", new { id = "tag-radio" }) <label for="tag-radio">Search by Tag</label>
-    @Html.TextBox("searchTerm")
+<h2>@Html.ActionLink("Home", "Index", "Home")</h2>
+<h1>@Html.ActionLink("Browse Recipes", "Index", "Recipes")</h1>
 
-    <input type="submit" value="Search">
-}
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="border p-3">
+                <p class="mb-3"><strong>Search for</strong></p>
+                @using (Html.BeginForm("Index", "Search", FormMethod.Get))
+                {
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButton("searchType", "rec", true, new { id = "rec-radio", @class = "form-check-input" })
+                        <label class="form-check-label" for="rec-radio">Recipe</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButton("searchType", "ing", false, new { id = "ing-radio", @class = "form-check-input" })
+                        <label class="form-check-label" for="ing-radio">Ingredient</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButton("searchType", "ing-rec", false, new { id = "ing-rec-radio", @class = "form-check-input" })
+                        <label class="form-check-label" for="ing-rec-radio">Recipe by ingredient</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButton("searchType", "tag", false, new { id = "tag-radio", @class = "form-check-input" })
+                        <label class="form-check-label" for="tag-radio">Search by Tag</label>
+                    </div>
+                    @Html.TextBox("searchTerm", null, new { @class = "form-control mt-2" })
+                    <button type="submit" class="btn btn-primary mt-2">Search</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
