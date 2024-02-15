@@ -22,7 +22,10 @@ public class RecipesController : Controller
     public ActionResult Index()
     {
         List<Recipe> model = _context.Recipes.ToList();
-        return View(model);
+        List<Recipe> sortedModel = model
+            .OrderBy(rec => rec.Ratings.Select(rat => rat.Value).DefaultIfEmpty(0).Average())
+            .ToList();
+        return View(sortedModel);
     }
 
     [HttpGet]
@@ -112,6 +115,15 @@ public class RecipesController : Controller
             .ThenInclude(join => join.Tag)
             .FirstOrDefault(r => r.RecipeId == id);
 
+        if (rec.Ratings.Count != 0)
+        {
+            double avg = rec.Ratings.Select(r => r.Value).Average();
+            ViewBag.Avg = Math.Round(avg, 2);
+        }
+        else
+        {
+            ViewBag.Avg = "No ratings yet.";
+        }
         if (User.Identity.IsAuthenticated)
         {
 
